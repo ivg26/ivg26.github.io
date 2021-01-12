@@ -1,0 +1,20 @@
+[
+  {
+    "objects": [
+      { "circle": { "coordinates": [41.28, 174.77], "size": 10 } },
+      { "circle": { "coordinates": [-41.29, 174.76], "size": 20 } },
+      { "circle": { "coordinates": [26, 60], "size": 30 } },
+      { "circle": { "coordinates": [37, -90], "size": 40 } },
+      { "circle": { "coordinates": [51, 10], "size": 50 } }
+    ]
+  },
+  {
+    "objects": [
+      { "circle": { "coordinates": [41.28, 174.77], "size": 50 } },
+      { "circle": { "coordinates": [-41.29, 174.76], "size": 40 } },
+      { "circle": { "coordinates": [26, 60], "size": 30 } },
+      { "circle": { "coordinates": [37, -90], "size": 20 } },
+      { "circle": { "coordinates": [51, 10], "size": 10 } }
+    ]
+  }
+]
