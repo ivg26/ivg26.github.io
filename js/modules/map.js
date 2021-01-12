@@ -1,6 +1,7 @@
 //some code taken from http://bl.ocks.org/d3noob/9267535 https://www.d3-graph-gallery.com/graph/bubblemap_leaflet_basic.html
 //hoverover code modified from https://jsfiddle.net/gerardofurtado/wxh95e9u/
 //Number formatting from https://stackoverflow.com/questions/5731193/how-to-format-numbers Answer Two
+//refresh
 export function showmap(collection) {
   var dates = collection.columns;
   dates.splice(0, 4);
