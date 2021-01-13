@@ -1,5 +1,5 @@
 //some code taken from http://bl.ocks.org/d3noob/9267535 https://www.d3-graph-gallery.com/graph/bubblemap_leaflet_basic.html
-//hoverover code modified from https://jsfiddle.net/gerardofurtado/wxh95e9u/
+//hoverover code modified fro https://jsfiddle.net/gerardofurtado/wxh95e9u/
 //Number formatting from https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 //Ideas for the tspan https://stackoverflow.com/questions/16701522/how-to-linebreak-an-svg-text-within-javascript
 
@@ -172,7 +172,7 @@ export function showmapfull(collection) {
       map.setView([i.tozooma, i.tozoomb], 4);
       update();
       //show information on popup display?
-      loadMapOverlay("")
+      loadMapOverlay("");
     })
     .append("svg:title")
     .text(function (d) {
