@@ -1,5 +1,4 @@
 import { ChartFactory } from "./chart-factory.js";
-import { showmap } from "./map.js";
 import { showmapfull } from "./map_fulldata.js";
 import { commodityDataHandler, coronaDataHandler } from "./data-handlers.js";
 

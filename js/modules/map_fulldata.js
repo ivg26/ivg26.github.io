@@ -2,6 +2,9 @@
 //hoverover code modified from https://jsfiddle.net/gerardofurtado/wxh95e9u/
 //Number formatting from https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 //Ideas for the tspan https://stackoverflow.com/questions/16701522/how-to-linebreak-an-svg-text-within-javascript
+
+import { loadMapOverlay } from "./map-overlay.js";
+
 export function showmapfull(collection) {
   var dates = collection.columns;
   dates.splice(0, 4);
@@ -10,6 +13,13 @@ export function showmapfull(collection) {
   var slider = document.getElementsByClassName("slider")[0];
   var sliderx = document.getElementsByClassName("slider")[0].attributes.d.value;
   var slidervalue = sliderx.split(",")[0].substring(1);
+
+  //todo: get the viewbox heights and use that as the overlay heights
+  var viewbox = document.getElementsByClassName("viewbox")[0].attributes.viewBox
+    .value;
+  var heightvalue = viewbox.split(",")[3];
+  console.log("test");
+  console.log(heightvalue);
 
   //var date = "11/11/20";
   //console.log(slidervalue);
@@ -73,13 +83,6 @@ export function showmapfull(collection) {
   //This part from here to the next comment should be in another module, just in here for now
   //It creates the marking inside of the charts to indicate events
   //should be created before the slider is created
-
-  var viewbox = document.getElementsByClassName("viewbox")[0].attributes.viewBox
-    .value;
-  var heightvalue = viewbox.split(",")[3];
-  console.log("test");
-  console.log(heightvalue);
-
   var cdata = [
     {
       name: "Crude Oil Falls Part 1",
@@ -169,6 +172,7 @@ export function showmapfull(collection) {
       map.setView([i.tozooma, i.tozoomb], 4);
       update();
       //show information on popup display?
+      loadMapOverlay("")
     })
     .append("svg:title")
     .text(function (d) {

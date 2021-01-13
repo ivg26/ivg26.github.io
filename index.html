@@ -5,6 +5,7 @@
     <script src="js/libs/d3.v6.js"></script>
     <script type="module" src="js/modules/main.js"></script>
     <script type="module" src="js/modules/chart_select.js"></script>
+    <script type="module" src="js/modules/map-overlay.js"></script>
     <link rel="stylesheet" href="css/styles.css" />
 
     <link
@@ -39,8 +40,13 @@
 		<input id="b006" type="button" value="None"/> 
 	
       </div>
-
-      <div id="map"></div>
+      <div id="map-container">
+          <div id="map-overlay">
+              <div id ="map-overlay-close">&#x274E;</div>
+              <div id="map-overlay-content"></div>
+          </div>
+          <div id="map"></div>
+      </div>
       <div id="corona-chart"></div>
       <div id="commodity-charts">
       </div>
