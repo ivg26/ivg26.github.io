@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <script src="js/libs/d3.v6.js"></script>
     <script type="module" src="js/modules/main.js"></script>
+    <script type="module" src="js/modules/chart_select.js"></script>
     <link rel="stylesheet" href="css/styles.css" />
 
     <link
@@ -25,9 +26,29 @@
 
   <body>
     <div id="dashboard">
+
+      <div id="control">
+	
+
+		<input id="b000" type="button" value="All"/> 
+		<input id="b001" type="button" value="Energy"/> 
+		<input id="b002" type="button" value="Metals"/> 
+		<input id="b003" type="button" value="Food"/> 
+		<input id="b004" type="button" value="Misc"/> 
+		<input id="b005" type="button" value="Custom"/> 
+		<input id="b006" type="button" value="None"/> 
+	
+      </div>
+
       <div id="map"></div>
       <div id="corona-chart"></div>
-      <div id="commodity-charts"></div>
+      <div id="commodity-charts">
+      </div>
+
     </div>
+
+
   </body>
+
+
 </html>

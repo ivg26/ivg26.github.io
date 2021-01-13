@@ -4,7 +4,7 @@ import { showmapfull } from "./map_fulldata.js";
 import { commodityDataHandler, coronaDataHandler } from "./data-handlers.js";
 
 d3.json("data/data_1y.json").then(function (data) {
-  drawCommodityCharts(data, 3);
+  drawCommodityCharts(data, 3, [1,3,5]);
   // window.addEventListener("resize", redrawDashboard(data));
 });
 
@@ -20,9 +20,14 @@ d3.csv("data/fulldata.csv").then(function (collection) {
   showmapfull(collection);
 });
 
+
 function drawCommodityCharts(data, sliderWith) {
   for (let i = 0; i < data.length; i++) {
-    const commodityChartWidth = document.getElementById("commodity-charts")
+   
+	var j = i;
+
+
+	const commodityChartWidth = document.getElementById("commodity-charts")
       .offsetWidth;
     const commodityChartHeight =
       document.getElementById("commodity-charts").offsetHeight / 4;
@@ -31,8 +36,18 @@ function drawCommodityCharts(data, sliderWith) {
       .height(commodityChartHeight)
       .sliderWidth(sliderWith)
       .dataHandler(commodityDataHandler)
-      .title(Object.keys(data[i])[0]);
-    d3.select("#commodity-charts").datum(data[i]).call(commodityChart);
+      .title(Object.keys(data[j])[0]);
+    
+
+    
+	var commodityChartDiv = document.getElementById("commodity-charts"),
+	comContainerDiv = document.createElement('div');
+	comContainerDiv.id = "com" + j + "";
+	//var containerId = "com" + j + "";
+	commodityChartDiv.appendChild(comContainerDiv);
+	
+	d3.select("#" + comContainerDiv.id + "").datum(data[j]).call(commodityChart);
+	//d3.select("#" + containerId + "").datum(data[j]).call(commodityChart);
   }
 }
 
@@ -63,3 +78,4 @@ function redrawDashboard(data) {
     drawCommodityCharts(data, commodityChartSliderWidth);
   };
 }
+
