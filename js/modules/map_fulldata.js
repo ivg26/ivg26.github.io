@@ -14,6 +14,11 @@ export function showmapfull(collection) {
   var sliderx = document.getElementsByClassName("slider")[0].attributes.d.value;
   var slidervalue = sliderx.split(",")[0].substring(1);
 
+  var coronaviewbox = document.getElementsByClassName("viewbox")[0];
+  console.log(coronaviewbox);
+  var cviewboxvalue = coronaviewbox.attributes.viewBox.value.split(",")[2];
+  console.log(cviewboxvalue);
+
   //todo: get the viewbox heights and use that as the overlay heights
   var viewbox = document.getElementsByClassName("viewbox")[0].attributes.viewBox
     .value;
@@ -24,7 +29,9 @@ export function showmapfull(collection) {
   //var date = "11/11/20";
   //console.log(slidervalue);
   slidervalue = slider.attributes.d.value.split(",")[0].substring(1);
-  var arrayvalue = Math.round(((slidervalue - 70) / 1056) * 323);
+  var arrayvalue = Math.round(
+    ((slidervalue - 70) / (cviewboxvalue - 90)) * 323
+  );
   if (arrayvalue == 323) {
     arrayvalue = 322;
   }
@@ -80,10 +87,7 @@ export function showmapfull(collection) {
   );
   console.log(collection);
 
-  //This part from here to the next comment should be in another module, just in here for now
-  //It creates the marking inside of the charts to indicate events
-  //should be created before the slider is created
-  var cdata = [
+  /*   var cdata = [
     {
       name: "Crude Oil Falls Part 1",
       width: 10,
@@ -146,7 +150,7 @@ export function showmapfull(collection) {
     .selectAll("rect")
     .data(cdata)
     .enter()
-    .append("rect")
+    .insert("rect", ":first-child")
     .attr("width", function (d) {
       return d.width;
     })
@@ -154,7 +158,7 @@ export function showmapfull(collection) {
       return heightvalue - 40;
     })
     .attr("x", function (d) {
-      var tomove = (d.date / 323) * 1056 + 70;
+      var tomove = (d.date / 323) * (cviewboxvalue - 90) + 70;
       console.log(tomove);
       return tomove;
     })
@@ -177,8 +181,7 @@ export function showmapfull(collection) {
     .append("svg:title")
     .text(function (d) {
       return d.name;
-    });
-  //until here
+    }); */
 
   var covidcases = g
     .selectAll("circle")
@@ -193,7 +196,8 @@ export function showmapfull(collection) {
     .attr("r", function (d) {
       var cases = d.size.split(",");
       var casehere = cases[0].substring(1);
-      return parseInt(casehere) / (300000 / Math.pow(map.getZoom(), 2));
+      console.log(parseInt(casehere) / d.Population);
+      return parseInt(casehere) / d.Population;
     })
     .on("mouseover", function (d, i) {
       d3.select(this).style("stroke", "black").style("stroke-width", 2);
@@ -226,12 +230,13 @@ export function showmapfull(collection) {
     .attr("pointer-events", "visible")
     .attr("id", "deaths")
     .style("stroke", "black")
-    .style("opacity", 0.4)
+    .style("opacity", 0)
+    .style("display", "none")
     .style("fill", "blue")
     .attr("r", function (d) {
       var cases = d.size.split(",");
       var casehere = cases[1];
-      return parseInt(casehere) / (deathstate / Math.pow(map.getZoom(), 2));
+      return (parseInt(casehere) / d.Population) * (100000 * map.getZoom());
     })
     .on("mouseover", function (d, i) {
       d3.select(this).style("stroke", "black").style("stroke-width", 2);
@@ -263,7 +268,8 @@ export function showmapfull(collection) {
     .attr("pointer-events", "visible")
     .attr("id", "recovered")
     .style("stroke", "black")
-    .style("opacity", 0.2)
+    .style("opacity", 0)
+    .style("display", "none")
     .style("fill", "yellow")
     .attr("r", function (d) {
       var cases = d.size.split(",");
@@ -271,7 +277,7 @@ export function showmapfull(collection) {
         cases = ["0", "0", "0]"];
       }
       var casehere = cases[2].slice(0, -1);
-      return parseInt(casehere) / (3000 / Math.pow(map.getZoom(), 2));
+      return (parseInt(casehere) / d.Population) * (10000 * map.getZoom());
     })
     .on("mouseover", function (d, i) {
       d3.select(this).style("stroke", "black").style("stroke-width", 2);
@@ -302,7 +308,7 @@ export function showmapfull(collection) {
     .append("rect")
     .style("opacity", 0)
     .style("width", "200")
-    .style("height", "120")
+    .style("height", "140")
     .attr("x", "-60")
     .attr("y", "-130")
     .style("fill", "white")
@@ -368,7 +374,7 @@ export function showmapfull(collection) {
         //marker.bindPopup(`<b>Test!</b><br>${d.size}`).openPopup();
         var cases = d.size.split(",");
         var casehere = cases[0].substring(1);
-        return parseInt(casehere) / (3000 / Math.pow(map.getZoom(), 2));
+        return (parseInt(casehere) / d.Population) * (10000 * map.getZoom());
       }
     });
     texts.select("tspan").remove();
@@ -378,11 +384,15 @@ export function showmapfull(collection) {
       .attr("x", -50)
       .attr("dy", -100)
       .text(function (d) {
-        if (d["Province/State"]) {
-          return d["Province/State"] + ", " + d["Country/Region"];
-        } else {
-          return d["Country/Region"];
-        }
+        return d["Country/Region"];
+      })
+      .append("tspan")
+      .attr("x", -50)
+      .attr("dy", 25)
+      .text(function (d) {
+        var pop = d.Population;
+        var fullpop = String(pop).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return "Population: " + fullpop;
       })
 
       .append("tspan")
@@ -442,7 +452,7 @@ export function showmapfull(collection) {
         //marker.bindPopup(`<b>Test!</b><br>${d.size}`).openPopup();
         var cases = d.size.split(",");
         var casehere = cases[1];
-        return parseInt(casehere) / (deathstate / Math.pow(map.getZoom(), 2));
+        return (parseInt(casehere) / d.Population) * (300000 * map.getZoom());
       }
     });
 
@@ -466,14 +476,15 @@ export function showmapfull(collection) {
           cases = ["0", "0", "0]"];
         }
         var casehere = cases[2].slice(0, -1);
-        return parseInt(casehere) / (3000 / Math.pow(map.getZoom(), 2));
+        return (parseInt(casehere) / d.Population) * (10000 * map.getZoom());
       }
     });
   }
 
   function updatex() {
     slidervalue = slider.attributes.d.value.split(",")[0].substring(1);
-    arrayvalue = Math.round(((slidervalue - 70) / 1056) * 323);
+    cviewboxvalue = coronaviewbox.attributes.viewBox.value.split(",")[2];
+    arrayvalue = Math.round(((slidervalue - 70) / (cviewboxvalue - 90)) * 323);
     //console.log(arrayvalue);
     if (arrayvalue == 323) {
       arrayvalue = 322;
@@ -605,14 +616,14 @@ export function showmapfull(collection) {
     },
     onRemove: function (map) {},
   });
-  L.control.layeredRS = function (opts) {
+  /*   L.control.layeredRS = function (opts) {
     return new L.Control.layeredRS(opts);
-  };
+  }; */
 
   L.control.layered({ position: "topright" }).addTo(map);
   L.control.layeredD({ position: "topright" }).addTo(map);
   L.control.layeredR({ position: "topright" }).addTo(map);
-  L.control.layeredRS({ position: "topright" }).addTo(map);
+  //L.control.layeredRS({ position: "topright" }).addTo(map);
 
   $("document").ready(function () {
     slider.addEventListener("pointermove", updatex);
@@ -622,4 +633,5 @@ export function showmapfull(collection) {
       element.addEventListener("pointermove", updatex);
     });
   });
+  return map;
 }

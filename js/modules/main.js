@@ -1,9 +1,11 @@
 import { ChartFactory } from "./chart-factory.js";
 import { showmapfull } from "./map_fulldata.js";
 import { commodityDataHandler, coronaDataHandler } from "./data-handlers.js";
+import { loadevents } from "./events-overlay.js";
 
 d3.json("data/data_1y.json").then(function (data) {
-  drawCommodityCharts(data, 3, [1,3,5]);
+  console.log(data);
+  drawCommodityCharts(data, 3, [1, 3, 5]);
   // window.addEventListener("resize", redrawDashboard(data));
 });
 
@@ -15,18 +17,19 @@ d3.csv("data/global_cases.csv", d3.autoType).then(function (data) {
 /* d3.csv("data/fullcovidcsv.csv").then(function (collection) {
   showmap(collection);
 }); */
-d3.csv("data/fulldata.csv").then(function (collection) {
-  showmapfull(collection);
+d3.csv("data/full_withpop_front.csv").then(function (collection) {
+  var map = showmapfull(collection);
+  d3.csv("data/events.csv").then(function (c2) {
+    console.log(c2);
+    loadevents(c2, map);
+  });
 });
-
 
 function drawCommodityCharts(data, sliderWith) {
   for (let i = 0; i < data.length; i++) {
-   
-	var j = i;
+    var j = i;
 
-
-	const commodityChartWidth = document.getElementById("commodity-charts")
+    const commodityChartWidth = document.getElementById("commodity-charts")
       .offsetWidth;
     const commodityChartHeight =
       document.getElementById("commodity-charts").offsetHeight / 4;
@@ -36,17 +39,17 @@ function drawCommodityCharts(data, sliderWith) {
       .sliderWidth(sliderWith)
       .dataHandler(commodityDataHandler)
       .title(Object.keys(data[j])[0]);
-    
 
-    
-	var commodityChartDiv = document.getElementById("commodity-charts"),
-	comContainerDiv = document.createElement('div');
-	comContainerDiv.id = "com" + j + "";
-	//var containerId = "com" + j + "";
-	commodityChartDiv.appendChild(comContainerDiv);
-	
-	d3.select("#" + comContainerDiv.id + "").datum(data[j]).call(commodityChart);
-	//d3.select("#" + containerId + "").datum(data[j]).call(commodityChart);
+    var commodityChartDiv = document.getElementById("commodity-charts"),
+      comContainerDiv = document.createElement("div");
+    comContainerDiv.id = "com" + j + "";
+    //var containerId = "com" + j + "";
+    commodityChartDiv.appendChild(comContainerDiv);
+
+    d3.select("#" + comContainerDiv.id + "")
+      .datum(data[j])
+      .call(commodityChart);
+    //d3.select("#" + containerId + "").datum(data[j]).call(commodityChart);
   }
 }
 
@@ -77,4 +80,3 @@ function redrawDashboard(data) {
     drawCommodityCharts(data, commodityChartSliderWidth);
   };
 }
-

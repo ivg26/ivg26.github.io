@@ -50,6 +50,7 @@ export function ChartFactory() {
 
       svg.append("g").call(xAxis);
       svg.append("g").call(yAxis);
+
       svg.append("path").datum(data).attr("d", line);
       svg
         .append("path")
