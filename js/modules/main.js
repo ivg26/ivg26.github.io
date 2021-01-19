@@ -18,7 +18,10 @@ d3.csv("data/global_cases.csv", d3.autoType).then(function (data) {
   showmap(collection);
 }); */
 d3.csv("data/full_withpop_front.csv").then(function (collection) {
-  var map = showmapfull(collection);
+  //https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json
+  d3.json("data/countries.geo.json").then(function (geodata) {
+    var map = showmapfull(collection, geodata);
+  });
   d3.csv("data/events.csv").then(function (c2) {
     console.log(c2);
     loadevents(c2, map);

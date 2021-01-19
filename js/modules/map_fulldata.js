@@ -5,7 +5,7 @@
 
 import { loadMapOverlay } from "./map-overlay.js";
 
-export function showmapfull(collection) {
+export function showmapfull(collection, geodata) {
   var dates = collection.columns;
   dates.splice(0, 4);
   console.log(dates);
@@ -39,10 +39,23 @@ export function showmapfull(collection) {
 
   var map = L.map("map").setView([0, 0], 2);
   var mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-  L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; " + mapLink + " Contributors",
-    maxZoom: 18,
-  }).addTo(map);
+  L.tileLayer(
+    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+    {
+      attribution: "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ",
+      maxZoom: 18,
+    }
+  ).addTo(map);
+  function style(feature) {
+    return {
+      weight: 3,
+      opacity: 1,
+      stroke: "#D9FCFF",
+      fill: "#D9FCFF",
+    };
+  }
+
+  var geojson = L.geoJson(geodata, { style: style }).addTo(map);
 
   L.svg().addTo(map);
 
@@ -232,7 +245,7 @@ export function showmapfull(collection) {
     .style("stroke", "black")
     .style("opacity", 0)
     .style("display", "none")
-    .style("fill", "blue")
+    .style("fill", "#450078")
     .attr("r", function (d) {
       var cases = d.size.split(",");
       var casehere = cases[1];
@@ -307,7 +320,7 @@ export function showmapfull(collection) {
     .enter()
     .append("rect")
     .style("opacity", 0)
-    .style("width", "200")
+    .style("width", "240")
     .style("height", "140")
     .attr("x", "-60")
     .attr("y", "-130")
@@ -411,7 +424,7 @@ export function showmapfull(collection) {
       .append("tspan")
       .attr("x", -50)
       .attr("dy", 25)
-      .style("stroke", "blue")
+      .style("stroke", "#450078")
       .text(function (d) {
         var cases = d.size.split(",");
         var coviddeaths = cases[1];
