@@ -1,4 +1,7 @@
-export function syncSlider(width, margin) {
+import {formatSliderDateText, scaleCircle, updateTexts} from "./map.js";
+import {formatDateKey} from "./data-handlers.js";
+
+export function syncSlider(width, margin, dateScaler) {
     const dragHandler = function (event, d) {
         const eventTrigger = this
         const isEventTriggerCoronaChart = this.parentNode.parentNode.getAttribute('id') === 'corona-chart'
@@ -42,6 +45,19 @@ export function syncSlider(width, margin) {
                     ])
                 .attr('d', d3.line())
         });
+
+
+        const date = dateScaler.invert(event.x)
+
+        // scale circles with slider
+        d3.select("#map").select("svg").selectAll("circle").attr("r", function (d) {
+            const data = d.data[formatDateKey(date)]
+            const size = data ? data[1] : [0, 0, 0]
+            return scaleCircle(this.id, size)
+        })
+
+        d3.select("#info_text").text(formatSliderDateText(date));
+        updateTexts(formatDateKey(date));
     };
 
     return d3.drag()

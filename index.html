@@ -1,60 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/scroll-bar.css"/>
     <script src="js/libs/d3.v6.js"></script>
     <script type="module" src="js/modules/main.js"></script>
     <script type="module" src="js/modules/chart_select.js"></script>
     <script type="module" src="js/modules/map-overlay.js"></script>
-    <link rel="stylesheet" href="css/styles.css" />
-
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-      crossorigin=""
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+            crossorigin=""
     />
     <script
-      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-      crossorigin=""
+            src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""
     ></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <title></title>
-  </head>
+</head>
 
-  <body>
-    <div id="dashboard">
+<body>
+<div id="dashboard">
 
-      <div id="control">
-	
 
-		<input id="b000" type="button" value="All"/> 
-		<input id="b001" type="button" value="Energy"/> 
-		<input id="b002" type="button" value="Metals"/> 
-		<input id="b003" type="button" value="Food"/> 
-		<input id="b004" type="button" value="Misc"/> 
-		<input id="b005" type="button" value="Custom"/> 
-		<input id="b006" type="button" value="None"/> 
-	
-      </div>
-      <div id="map-container">
-          <div id="map-overlay">
-              <div id ="map-overlay-close">&#x274E;</div>
-              <div id="map-overlay-content"></div>
-          </div>
-          <div id="map"></div>
-      </div>
-      <div id="corona-chart"></div>
-      <div id="commodity-charts">
-      </div>
-
+    <div id="map-container">
+        <div id="map-controls">
+            <div class="corona-chart-legend-entry-active corona-chart-legend-entry" style="color: rgb(255, 61, 113);">
+                <span class="inline-icon material-icons">radio_button_checked</span> Cases
+            </div>
+            <div class=" corona-chart-legend-entry" style="color: rgb(255, 170, 0);"><span
+                    class="inline-icon material-icons">radio_button_unchecked</span> Deaths
+            </div>
+            <div class="corona-chart-legend-entry" style="color: rgb(0, 214, 143);"><span
+                    class="inline-icon material-icons">radio_button_unchecked</span> Recovered
+            </div>
+        </div>
+        <div id="map-overlay">
+            <div id="map-overlay-close">&#x274E;</div>
+            <div id="map-overlay-content"></div>
+        </div>
+        <div id="map"></div>
+    </div>
+    <div id="corona-chart">
+        <div id="corona-chart-controls">
+            <div class="corona-chart-legend-entry-active corona-chart-legend-entry" style="color: rgb(255, 61, 113);">
+                <span class="inline-icon material-icons">radio_button_checked</span> Cases
+            </div>
+            <div class=" corona-chart-legend-entry" style="color: rgb(255, 170, 0);"><span
+                    class="inline-icon material-icons">radio_button_unchecked</span> Deaths
+            </div>
+            <div class="corona-chart-legend-entry" style="color: rgb(0, 214, 143);"><span
+                    class="inline-icon material-icons">radio_button_unchecked</span> Recovered
+            </div>
+            <div class="corona-chart-legend-entry" id="country-label" style="color: #17a2b8;  display: none;"><span
+                    class="inline-icon material-icons">radio_button_unchecked</span> <span id="country-label-country">Country</span> cases
+            </div>
+        </div>
+    </div>
+    <div id="commodity-charts">
+        <div id="commodity-control">
+            <div class="commodity-control-button" id="b201">ENERGY / FOSSIL FUELS</div>
+            <div class="commodity-control-button"id="b202">METALS / RARE EARTHS</div>
+            <div class="commodity-control-button" id="b203">FOOD</div>
+            <div class="commodity-control-button"id="b204">MISCELLANEOUS</div>
+        </div>
+	<div class="comBox" id="commodity-charts-subset-energy">
+        </div>
+	<div class="comBox" id="commodity-charts-subset-metals">
+        </div>
+	<div class="comBox" id="commodity-charts-subset-food">
+        </div>
+	<div class="comBox" id="commodity-charts-subset-misc">
+        </div>
     </div>
 
+</div>
 
-  </body>
+
+</body>
 
 
 </html>

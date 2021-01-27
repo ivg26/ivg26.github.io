@@ -26,7 +26,7 @@ export function loadevents(collection, map) {
       var timepassed = Math.abs(thisdate.getTime() - ddate.getTime());
       var placement = Math.ceil(timepassed / (1000 * 60 * 60 * 24));
       var tomove = (placement / 323) * (cviewboxvalue - 90) + 70;
-      console.log(tomove);
+      //console.log(tomove);
       return tomove;
     })
     .attr("y", function (d) {
@@ -38,7 +38,7 @@ export function loadevents(collection, map) {
       for (var i = 0; i < titlenames.length; i++) {
         //console.log(titlenames[i]);
         if (titlenames[i].textContent == tofind) {
-          console.log("found");
+          //console.log("found");
           titlenames[i].setAttribute("fill", d.color);
         }
       }
@@ -52,7 +52,7 @@ export function loadevents(collection, map) {
       //map.setView([i.tozooma, i.tozoomb], 4);
       //update();
       //show information on popup display?
-      console.log(i.url);
+      //console.log(i.url);
       loadMapOverlay(i.url);
     })
     .append("svg:title")

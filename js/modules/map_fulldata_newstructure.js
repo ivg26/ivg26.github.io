@@ -5,10 +5,13 @@
 
 import { loadMapOverlay } from "./map-overlay.js";
 
-export function showmapfull(collection, geodata) {
-  var dates = collection.columns;
-  dates.splice(0, 4);
-  console.log(dates);
+export function showmapfullnew(collection, geodata, datesone) {
+  var dates= []
+  for (var i in datesone['0']){
+    dates.push(datesone['0'][i])
+  }
+  dates.shift()
+  console.log(dates)
 
   var slider = document.getElementsByClassName("slider")[0];
   var sliderx = document.getElementsByClassName("slider")[0].attributes.d.value;
@@ -19,7 +22,6 @@ export function showmapfull(collection, geodata) {
   var cviewboxvalue = coronaviewbox.attributes.viewBox.value.split(",")[2];
   console.log(cviewboxvalue);
 
-  //todo: get the viewbox heights and use that as the overlay heights
   var viewbox = document.getElementsByClassName("viewbox")[0].attributes.viewBox
     .value;
   var heightvalue = viewbox.split(",")[3];
@@ -30,12 +32,14 @@ export function showmapfull(collection, geodata) {
   //console.log(slidervalue);
   slidervalue = slider.attributes.d.value.split(",")[0].substring(1);
   var arrayvalue = Math.round(
-    ((slidervalue - 70) / (cviewboxvalue - 90)) * 323
+    ((slidervalue - 45) / (cviewboxvalue - 65)) * 323
   );
   if (arrayvalue == 323) {
     arrayvalue = 322;
   }
   var chosendate = dates[arrayvalue];
+  console.log(arrayvalue)
+  console.log(chosendate)
 
   var map = L.map("map").setView([0, 0], 2);
   var mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
@@ -85,116 +89,29 @@ export function showmapfull(collection, geodata) {
   //console.log(time);
 
   /* Add a LatLng object to each item in the dataset */
-  //console.log(collection);
+  console.log(collection);
 
   //collection[time].objects.forEach(function (d) {
   collection.forEach(function (d) {
-    d.LatLng = new L.LatLng(d.Lat, d.Long);
-    d.size = d[chosendate];
+    console.log(d['0'])
+    if (d['0'].split('|').length == 1){
+      d.LatLng = new L.LatLng(90,90)
+      d.Name = "none"
+    }else{
+      d.LatLng = new L.LatLng(d['0'].split('|')[1], d['0'].split('|')[2]);
+      d.Name = d['0'].split('|')[0]
+    }
+    console.log(d[arrayvalue])
+    d.size = d[arrayvalue].split("|");
+
   });
 
   collection.sort(
     (a, b) =>
-      parseInt(b[chosendate].split(",")[0].substring(1)) -
-      parseInt(a[chosendate].split(",")[0].substring(1))
+      parseInt(b[arrayvalue].split("|")[0]) -
+      parseInt(a[arrayvalue].split("|")[0])
   );
   console.log(collection);
-
-  /*   var cdata = [
-    {
-      name: "Crude Oil Falls Part 1",
-      width: 10,
-      height: 255,
-      date: 46,
-      color: "#FF3030",
-      tozooma: 40.0,
-      tozoomb: -100.0,
-    },
-    {
-      name: "Crude Oil Falls Part 2",
-      width: 10,
-      height: 255,
-      date: 89,
-      color: "#FF1A1A",
-      tozooma: 40.0,
-      tozoomb: -90.0,
-    },
-    {
-      name: "Milk and Cheese Rise",
-      width: 10,
-      height: 255,
-      date: 135,
-      color: "#A2FF9f",
-      tozooma: 20.593684,
-      tozoomb: 78.96288,
-    },
-    {
-      name: "Natural Gas Rises",
-      width: 10,
-      height: 255,
-      date: 192,
-      color: "#3EFF38",
-      tozooma: 61.52401,
-      tozoomb: 105.318756,
-    },
-    {
-      name: "Lumber Rises",
-      width: 10,
-      height: 255,
-      date: 186,
-      color: "#08FF00",
-      tozooma: 53.9333,
-      tozoomb: -116.5765,
-    },
-    {
-      name: "Lumber Falls",
-      width: 10,
-      height: 255,
-      date: 240,
-      color: "#FF0000",
-      tozooma: 64.2823,
-      tozoomb: -135.0,
-    },
-  ];
-
-  var cchart = d3
-    .select("#corona-chart")
-    .select("svg")
-    .selectAll("rect")
-    .data(cdata)
-    .enter()
-    .insert("rect", ":first-child")
-    .attr("width", function (d) {
-      return d.width;
-    })
-    .attr("height", function (d) {
-      return heightvalue - 40;
-    })
-    .attr("x", function (d) {
-      var tomove = (d.date / 323) * (cviewboxvalue - 90) + 70;
-      console.log(tomove);
-      return tomove;
-    })
-    .attr("y", function (d) {
-      return 11;
-    })
-    .style("fill", function (d) {
-      return d.color;
-    })
-    .style("opacity", 0.4)
-    .style("cursor", "pointer")
-    .on("click", function (d, i) {
-      console.log("test");
-      console.log(i.tozooma);
-      map.setView([i.tozooma, i.tozoomb], 4);
-      update();
-      //show information on popup display?
-      loadMapOverlay("");
-    })
-    .append("svg:title")
-    .text(function (d) {
-      return d.name;
-    }); */
 
   var covidcases = g
     .selectAll("circle")
@@ -203,14 +120,14 @@ export function showmapfull(collection, geodata) {
     .append("circle")
     .attr("pointer-events", "visible")
     .attr("id", "cases")
-    .style("stroke", "black")
-    .style("opacity", 0.6)
-    .style("fill", "red")
+      .style("opacity", 0.6)
+      .style("fill", "#ff3d71")
     .attr("r", function (d) {
-      var cases = d.size.split(",");
-      var casehere = cases[0].substring(1);
-      console.log(parseInt(casehere) / d.Population);
-      return parseInt(casehere) / d.Population;
+      if ((d.size == undefined) | (d.size[0] < 0)) {
+        return 0;
+      } else {
+        return d.size[0] / (3000/ Math.pow(map.getZoom(), 2));
+      }
     })
     .on("mouseover", function (d, i) {
       d3.select(this).style("stroke", "black").style("stroke-width", 2);
@@ -221,7 +138,7 @@ export function showmapfull(collection, geodata) {
         return e.LatLng === i.LatLng;
       });
       toshow.style("opacity", 1);
-      toshowboxes.style("opacity", 0.7);
+      toshowboxes.style("opacity", 0.9);
     })
     .on("mouseout", function (d) {
       d3.select(this).style("stroke", "none");
@@ -242,14 +159,15 @@ export function showmapfull(collection, geodata) {
     .append("circle")
     .attr("pointer-events", "visible")
     .attr("id", "deaths")
-    .style("stroke", "black")
     .style("opacity", 0)
     .style("display", "none")
-    .style("fill", "#450078")
+    .style("fill", "#ffaa00")
     .attr("r", function (d) {
-      var cases = d.size.split(",");
-      var casehere = cases[1];
-      return (parseInt(casehere) / d.Population) * (100000 * map.getZoom());
+      if ((d.size == undefined) | (d.size[1] < 0)) {
+        return 0;
+      } else {
+        return d.size[1] / (300 / Math.pow(map.getZoom(), 2));
+      }
     })
     .on("mouseover", function (d, i) {
       d3.select(this).style("stroke", "black").style("stroke-width", 2);
@@ -280,17 +198,15 @@ export function showmapfull(collection, geodata) {
     .append("circle")
     .attr("pointer-events", "visible")
     .attr("id", "recovered")
-    .style("stroke", "black")
     .style("opacity", 0)
     .style("display", "none")
-    .style("fill", "yellow")
+    .style("fill", "#00d68f")
     .attr("r", function (d) {
-      var cases = d.size.split(",");
-      if (cases.length == 1) {
-        cases = ["0", "0", "0]"];
+      if ((d.size == undefined) | (d.size[2] < 0)) {
+        return 0;
+      } else {
+        return d.size[2] / (3000 / Math.pow(map.getZoom(), 2));
       }
-      var casehere = cases[2].slice(0, -1);
-      return (parseInt(casehere) / d.Population) * (10000 * map.getZoom());
     })
     .on("mouseover", function (d, i) {
       d3.select(this).style("stroke", "black").style("stroke-width", 2);
@@ -320,12 +236,12 @@ export function showmapfull(collection, geodata) {
     .enter()
     .append("rect")
     .style("opacity", 0)
-    .style("width", "240")
+    .style("width", "210")
     .style("height", "140")
     .attr("x", "-60")
     .attr("y", "-130")
     .style("fill", "white")
-    .style("rx", "15");
+    .style("rx", "2");
 
   var texts = g
     .selectAll("text")
@@ -333,17 +249,16 @@ export function showmapfull(collection, geodata) {
     .enter()
     .append("text")
     .style("opacity", 0)
-    .style("font-weight", "bold")
-    .style("stroke", "black")
-    .style("stroke-width", "0.5")
+    .style("font-weight", 600)
     .style("fill", "black")
-    .style("font-size", "20px");
+
+
 
   var date = d3
     .select("#info_text")
     .append("text")
-    .style("font-weight", "bold")
-    .style("font-size", "50px")
+    .style("font-weight", "700")
+    .style("font-size", "25px")
     .text(function (d) {
       return chosendate;
     });
@@ -380,14 +295,10 @@ export function showmapfull(collection, geodata) {
       );
     });
     covidcases.attr("r", function (d) {
-      if ((d.size == undefined) | (d.size < 0)) {
+      if ((d.size == undefined) | (d.size[0] < 0)) {
         return 0;
       } else {
-        //var marker = L.marker(d.LatLng).addTo(map);
-        //marker.bindPopup(`<b>Test!</b><br>${d.size}`).openPopup();
-        var cases = d.size.split(",");
-        var casehere = cases[0].substring(1);
-        return (parseInt(casehere) / d.Population) * (10000 * map.getZoom());
+        return d.size[0] / (3000/ Math.pow(map.getZoom(), 2));
       }
     });
     texts.select("tspan").remove();
@@ -397,25 +308,25 @@ export function showmapfull(collection, geodata) {
       .attr("x", -50)
       .attr("dy", -100)
       .text(function (d) {
-        return d["Country/Region"];
-      })
-      .append("tspan")
+        return d.Name;
+      }).style("font-weight", 700).style("font-size", "18px")
+      /* .append("tspan")
       .attr("x", -50)
       .attr("dy", 25)
       .text(function (d) {
         var pop = d.Population;
         var fullpop = String(pop).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return "Population: " + fullpop;
-      })
+      }).style("font-weight", 600).style("font-size", "14px") */
 
       .append("tspan")
       .attr("x", -50)
       .attr("dy", 25)
-      .style("stroke", "red")
+        .style("fill", "#ff3d71")
+        .style("stroke-width", 0)
       .text(function (d) {
-        var cases = d.size.split(",");
-        var covidcases = cases[0].substring(1);
-        var casenumber = String(covidcases).replace(
+        var cases = d.size[0]
+        var casenumber = String(cases).replace(
           /\B(?=(\d{3})+(?!\d))/g,
           ","
         );
@@ -424,24 +335,21 @@ export function showmapfull(collection, geodata) {
       .append("tspan")
       .attr("x", -50)
       .attr("dy", 25)
-      .style("stroke", "#450078")
-      .text(function (d) {
-        var cases = d.size.split(",");
-        var coviddeaths = cases[1];
-        var deaths = String(coviddeaths).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      .style("fill", "rgb(255, 170, 0)")
+        .style("stroke-width", 0)
+        .text(function (d) {
+        var cases = d.size[1]
+        var deaths = String(cases).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         return "Deaths: " + deaths;
       })
       .append("tspan")
       .attr("x", -50)
       .attr("dy", 25)
-      .style("stroke", "yellow")
+      .style("fill", "rgb(0, 214, 143)")
+      .style("stroke-width", 0)
       .text(function (d) {
-        var cases = d.size.split(",");
-        if (cases.length == 1) {
-          cases = ["[0", "0", "0]"];
-        }
-        var covidrecovered = cases[2].slice(0, -1);
-        var recovered = String(covidrecovered).replace(
+        var cases = d.size[2]
+        var recovered = String(cases).replace(
           /\B(?=(\d{3})+(?!\d))/g,
           ","
         );
@@ -458,14 +366,10 @@ export function showmapfull(collection, geodata) {
       );
     });
     deaths.attr("r", function (d) {
-      if ((d.size == undefined) | (d.size < 0)) {
+      if ((d.size == undefined) | (d.size[1] < 0)) {
         return 0;
       } else {
-        //var marker = L.marker(d.LatLng).addTo(map);
-        //marker.bindPopup(`<b>Test!</b><br>${d.size}`).openPopup();
-        var cases = d.size.split(",");
-        var casehere = cases[1];
-        return (parseInt(casehere) / d.Population) * (300000 * map.getZoom());
+        return d.size[1] / (300 / Math.pow(map.getZoom(), 2));
       }
     });
 
@@ -479,17 +383,10 @@ export function showmapfull(collection, geodata) {
       );
     });
     recovered.attr("r", function (d) {
-      if ((d.size == undefined) | (d.size < 0)) {
+      if ((d.size == undefined) | (d.size[2] < 0)) {
         return 0;
       } else {
-        //var marker = L.marker(d.LatLng).addTo(map);
-        //marker.bindPopup(`<b>Test!</b><br>${d.size}`).openPopup();
-        var cases = d.size.split(",");
-        if (cases.length == 1) {
-          cases = ["0", "0", "0]"];
-        }
-        var casehere = cases[2].slice(0, -1);
-        return (parseInt(casehere) / d.Population) * (10000 * map.getZoom());
+        return d.size[2] / (3000 / Math.pow(map.getZoom(), 2));
       }
     });
   }
@@ -497,7 +394,9 @@ export function showmapfull(collection, geodata) {
   function updatex() {
     slidervalue = slider.attributes.d.value.split(",")[0].substring(1);
     cviewboxvalue = coronaviewbox.attributes.viewBox.value.split(",")[2];
-    arrayvalue = Math.round(((slidervalue - 70) / (cviewboxvalue - 90)) * 323);
+    var arrayvalue = Math.round(
+      ((slidervalue - 45) / (cviewboxvalue - 65)) * 323
+    );
     //console.log(arrayvalue);
     if (arrayvalue == 323) {
       arrayvalue = 322;
@@ -511,10 +410,21 @@ export function showmapfull(collection, geodata) {
     //console.log(chosendate);
 
     collection.forEach(function (d) {
-      d.LatLng = new L.LatLng(d.Lat, d.Long);
-      d.size = d[chosendate];
+/*       if (d['0'].split('|').length == 1){
+        d.LatLng = new L.LatLng(90,90)
+        d.Population = 0
+      }else{
+        d.LatLng = new L.LatLng(d['0'].split('|')[1], d['0'].split('|')[2]);
+        d.Population = d['0'].split('|')[0]
+      } */
+
+      d.size = d[arrayvalue].split("|");
     });
-    collection.sort((a, b) => b[chosendate] - a[chosendate]);
+    collection.sort(
+      (a, b) =>
+        parseInt(b[arrayvalue].split("|")[0]) -
+        parseInt(a[arrayvalue].split("|")[0])
+    );
     //console.log(collection);
     update();
   }
