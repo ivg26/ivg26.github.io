@@ -118,12 +118,16 @@ export function ChartFactory() {
                     .x((d) => xScale(d.date))
                     .y((d) => yScale(d.value))
                     .curve(d3.curveBasis);
+
                 svg
                     .append("path")
                     .datum(data)
                     .attr("d", line)
                     .attr("class", "curve")
                     .style("stroke", "rgb(0, 214, 143)");
+
+        
+
             }
 
             const slider = d3.line();

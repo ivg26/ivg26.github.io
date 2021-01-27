@@ -14,6 +14,7 @@ var subset_misc = [3, 14, 15, 24, 33, 37, 40, 49, 54];
 
 	var xtyu = document.getElementById("commodity-charts-subset-energy");
 	xtyu.style.display = "block";
+	document.getElementById("b201").style["background-color"] = "rgba(50, 98, 168, 0.5)";
 
 export function showenergy(){
 		
@@ -28,6 +29,10 @@ export function showenergy(){
 
 	var xtyu = document.getElementById("commodity-charts-subset-energy");
 	xtyu.style.display = "block";
+	document.getElementById("b201").style["background-color"] = "rgba(50, 98, 168, 0.5)";
+	document.getElementById("b202").style["background-color"] = "white";
+	document.getElementById("b203").style["background-color"] = "white";
+	document.getElementById("b204").style["background-color"] = "white";
 }
 
 export function showmetals(){
@@ -42,6 +47,10 @@ export function showmetals(){
 
 	var xtyu = document.getElementById("commodity-charts-subset-metals");
 	xtyu.style.display = "block";
+	document.getElementById("b201").style["background-color"] = "white";
+	document.getElementById("b202").style["background-color"] = "rgba(50, 98, 168, 0.5)";
+	document.getElementById("b203").style["background-color"] = "white";
+	document.getElementById("b204").style["background-color"] = "white";
 
 }
 
@@ -58,6 +67,10 @@ export function showfood(){
 
 	var xtyu = document.getElementById("commodity-charts-subset-food");
 	xtyu.style.display = "block";
+	document.getElementById("b201").style["background-color"] = "white";
+	document.getElementById("b202").style["background-color"] = "white";
+	document.getElementById("b203").style["background-color"] = "rgba(50, 98, 168, 0.5)";
+	document.getElementById("b204").style["background-color"] = "white";
 
 }
 
@@ -74,6 +87,10 @@ export function showmis(){
 
 	var xtyu = document.getElementById("commodity-charts-subset-misc");
 	xtyu.style.display = "block";
+	document.getElementById("b201").style["background-color"] = "white";
+	document.getElementById("b202").style["background-color"] = "white";
+	document.getElementById("b203").style["background-color"] = "white";
+	document.getElementById("b204").style["background-color"] = "rgba(50, 98, 168, 0.5)";
 
 }
 document.getElementById("b201").onclick = function(){showenergy();}
