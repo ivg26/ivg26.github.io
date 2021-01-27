@@ -46,7 +46,11 @@
         </div>
         <div id="map-overlay">
             <div id="map-overlay-close">&#x274E;</div>
+            <div id="map-overlay-title"></div>
             <div id="map-overlay-content"></div>
+            <div id="map-overlay-link">
+                <a id="map-overlay-link2" href=""  target=”_blank”></a>
+            </div>
         </div>
         <div id="map"></div>
     </div>
@@ -62,26 +66,28 @@
                     class="inline-icon material-icons">radio_button_unchecked</span> Recovered
             </div>
             <div class="corona-chart-legend-entry" id="country-label" style="color: #17a2b8;  display: none;"><span
-                    class="inline-icon material-icons">radio_button_unchecked</span> <span id="country-label-country">Country</span> cases
+                    class="inline-icon material-icons">radio_button_unchecked</span> <span id="country-label-country">Country</span>
+                cases
             </div>
         </div>
     </div>
     <div id="commodity-charts">
         <div id="commodity-control">
-            <div class="commodity-control-button" id="b201">ENERGY / FOSSIL FUELS</div>
-            <div class="commodity-control-button"id="b202">METALS / RARE EARTHS</div>
+            <div class="commodity-control-button commodity-control-button-active" id="b201">ENERGY / FOSSIL FUELS</div>
+            <div class="commodity-control-button" id="b202">METALS / RARE EARTHS</div>
             <div class="commodity-control-button" id="b203">FOOD</div>
-            <div class="commodity-control-button"id="b204">MISCELLANEOUS</div>
+            <div class="commodity-control-button" id="b204">MISCELLANEOUS</div>
         </div>
-	<div class="comBox" id="commodity-charts-subset-energy">
+        <div class="comBox" id="commodity-charts-subset-energy">
         </div>
-	<div class="comBox" id="commodity-charts-subset-metals">
+        <div class="comBox" id="commodity-charts-subset-metals">
         </div>
-	<div class="comBox" id="commodity-charts-subset-food">
+        <div class="comBox" id="commodity-charts-subset-food">
         </div>
-	<div class="comBox" id="commodity-charts-subset-misc">
+        <div class="comBox" id="commodity-charts-subset-misc">
         </div>
     </div>
+
 
 </div>
 

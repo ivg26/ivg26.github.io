@@ -1,63 +1,70 @@
 export const globalCoronaEvents = [
     {
-        title: "Title",
-        date: new Date("2020-08-01"),
-        url: "https://en.wikipedia.org/",
+        title: "Cheese prices rise",
+        content: "The coronavirus caused cheese prices to sink in April, but as more restaurants reopened, the price of cheese also rose.",
+        date: new Date("2020-06-02"),
+        url: "https://www.q13fox.com/news/cheese-prices-soar-to-record-highs-due-to-shifts-in-demand-during-coronavirus-pandemic",
+        commodity: 'Cheese',
+        type: "food"
     },
     {
-        title: "Title",
-        date: new Date("2020-02-20"),
-        url: "https://en.wikipedia.org/",
+        title: "Crude Oil goes negative",
+        content: "As the coronavirus kept people indoors, the price of crude oil went negative in a surprising turn of events.",
+        date: new Date("2020-04-19"),
+        url: "https://www.bbc.com/news/business-52350082",
+        commodity: 'Crude Oil WTI',
+        type: "energy"
     },
     {
-        title: "Title",
-        date: new Date("2020-06-01"),
-        url: "https://en.wikipedia.org/",
+        title: "Baltic Dry Index rise",
+        content: "The Baltic Dry Index is a measurement of the cost of transporting raw materials by water. In June, there was a rise as more and more countries reopened their markets.",
+        date: new Date("2020-06-16"),
+        url: "https://www.reuters.com/article/baltic-index/baltic-index-rises-to-over-6-month-high-on-firm-vessel-rates-idUSL4N2DT345",
+        commodity: 'Baltic Dry',
+        type: "mis"
+    },
+    {
+        title: "Start of 4 Month Lumber Price Rise",
+        content: "After a decline due to the pandemic, Lumber starts a 4 month rise.",
+        date: new Date("2020-04-01"),
+        url: "https://eyeonhousing.org/2020/09/largest-four-month-lumber-price-increase-in-70-years-outweighs-other-price-declines-in-august/",
+        commodity: 'Lumber',
+        type: "metal"
     },
 ]
 
 
 export const commodityEvents = [
     {
-        title: "Title",
-        date: new Date("2020-02-20"),
-        url: "https://en.wikipedia.org/",
-        commodity: 'Lithium Carbonate'
-    },
-    {
-        title: "Title",
-        date: new Date("2020-03-17"),
-        url: "https://en.wikipedia.org/",
-        commodity: 'Coffee'
-    },
-    {
-        title: "Title",
-        date: new Date("2020-06-01"),
-        url: "https://en.wikipedia.org/",
-        commodity: 'Naphtha'
-    },
-    {
         title: "Cheese prices rise",
+        content: "The coronavirus caused cheese prices to sink in April, but as more restaurants reopened, the price of cheese also rose.",
         date: new Date("2020-06-02"),
         url: "https://www.q13fox.com/news/cheese-prices-soar-to-record-highs-due-to-shifts-in-demand-during-coronavirus-pandemic",
-        commodity: 'Cheese'
+        commodity: 'Cheese',
+        type: "food"
     },
     {
         title: "Crude Oil goes negative",
+        content: "As the coronavirus kept people indoors, the price of crude oil went negative in a surprising turn of events.",
         date: new Date("2020-04-19"),
         url: "https://www.bbc.com/news/business-52350082",
-        commodity: 'Crude Oil WTI'
+        commodity: 'Crude Oil WTI',
+        type: "energy"
     },
     {
-        title: "Baltic High rise",
+        title: "Baltic Dry Index rise",
+        content: "The Baltic Dry Index is a measurement of the cost of transporting raw materials by water. In June, there was a rise as more and more countries reopened their markets.",
         date: new Date("2020-06-16"),
         url: "https://www.reuters.com/article/baltic-index/baltic-index-rises-to-over-6-month-high-on-firm-vessel-rates-idUSL4N2DT345",
-        commodity: 'Baltic Dry'
+        commodity: 'Baltic Dry',
+        type: "mis"
     },
     {
         title: "Start of 4 Month Lumber Price Rise",
+        content: "After a decline due to the pandemic, Lumber starts a 4 month rise.",
         date: new Date("2020-04-01"),
         url: "https://eyeonhousing.org/2020/09/largest-four-month-lumber-price-increase-in-70-years-outweighs-other-price-declines-in-august/",
-        commodity: 'Lumber'
+        commodity: 'Lumber',
+        type: "metal"
     },
 ]

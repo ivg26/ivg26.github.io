@@ -15,8 +15,8 @@ var subset_misc = [3, 14, 15, 24, 33, 37, 40, 49, 54];
 	var xtyu = document.getElementById("commodity-charts-subset-energy");
 	xtyu.style.display = "block";
 
-document.getElementById("b201").onclick = function() {
-	
+export function showenergy(){
+		
 	var xtyu = document.getElementById("commodity-charts-subset-energy");
 	xtyu.style.display = "none";
 	var xtyu = document.getElementById("commodity-charts-subset-metals");
@@ -28,10 +28,9 @@ document.getElementById("b201").onclick = function() {
 
 	var xtyu = document.getElementById("commodity-charts-subset-energy");
 	xtyu.style.display = "block";
-
 }
-document.getElementById("b202").onclick = function() {
-	
+
+export function showmetals(){
 	var xtyu = document.getElementById("commodity-charts-subset-energy");
 	xtyu.style.display = "none";
 	var xtyu = document.getElementById("commodity-charts-subset-metals");
@@ -46,8 +45,8 @@ document.getElementById("b202").onclick = function() {
 
 }
 
-document.getElementById("b203").onclick = function() {
-	
+export function showfood(){
+		
 	var xtyu = document.getElementById("commodity-charts-subset-energy");
 	xtyu.style.display = "none";
 	var xtyu = document.getElementById("commodity-charts-subset-metals");
@@ -62,8 +61,8 @@ document.getElementById("b203").onclick = function() {
 
 }
 
-document.getElementById("b204").onclick = function() {
-	
+export function showmis(){
+		
 	var xtyu = document.getElementById("commodity-charts-subset-energy");
 	xtyu.style.display = "none";
 	var xtyu = document.getElementById("commodity-charts-subset-metals");
@@ -77,4 +76,11 @@ document.getElementById("b204").onclick = function() {
 	xtyu.style.display = "block";
 
 }
+document.getElementById("b201").onclick = function(){showenergy();}
+
+document.getElementById("b202").onclick = function() {showmetals();}
+
+document.getElementById("b203").onclick = function() {showfood();}
+
+document.getElementById("b204").onclick = function() {showmis();}
 

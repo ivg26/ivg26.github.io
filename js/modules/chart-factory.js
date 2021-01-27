@@ -1,4 +1,6 @@
 import {syncSlider} from "./sync-slider.js";
+import {loadMapOverlay} from './map-overlay.js';
+import {showenergy, showmetals, showfood, showmis} from './chart_select.js'
 
 
 // TODO:
@@ -151,6 +153,9 @@ export function ChartFactory() {
                         .attr("class", "chart-event")
                         .attr("cy", yScale.range()[0])
                         .attr("cx", xScale(events[i].date))
+                        .attr("stroke", "rgb(102, 16, 242)")
+                        .attr("fill", "rgba(102, 16, 242, 0.5)")
+                        .attr('id', "eventcircle" + i)
                         .on("mouseover", function (d) {
                             let cx, cy
                             if (id === "#commodity-charts") {
@@ -169,10 +174,22 @@ export function ChartFactory() {
                                 .style("top", cy);
                         })
                         .on('click', function (d) {
-                            window.open(
-                                'http://en.wikipedia.org',
+                            /* window.open(
+                                events[i].url,
                                 '_blank' // <- This is what makes it open in a new window.
-                            );
+                            ); */
+                            d3.select(this).attr("stroke", "rgb(50, 98, 168)");
+                            d3.select(this).attr("fill", "rgba(50, 98, 168, 0.5)");
+                            loadMapOverlay(events[i].title, events[i].content, events[i].url, d3.select(this))
+                            if (events[i].type == "energy"){
+                                showenergy();
+                            }else if(events[i].type == "metal"){
+                                showmetals();
+                            }else if(events[i].type == "food"){
+                                showfood();
+                            }else if(events[i].type == "mis"){
+                                showmis();
+                            }
                         })
                         .on("mouseout", function (d) {
                             div.transition()
