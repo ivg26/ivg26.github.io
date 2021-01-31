@@ -35,19 +35,19 @@ export function addMapControlListeners() {
 
             const targetInnerText = click.target.innerText.toLowerCase()
             if (targetInnerText.includes('cases')) {
-                d3.select("#map").select("svg").selectAll("#cases").style("display", "block")
-                d3.select("#map").select("svg").selectAll("#deaths").style("display", "none")
-                d3.select("#map").select("svg").selectAll("#recovered").style("display", "none")
+                d3.select("#map").select("svg").selectAll("circle[type='cases']").style("display", "block")
+                d3.select("#map").select("svg").selectAll("circle[type='deaths']").style("display", "none")
+                d3.select("#map").select("svg").selectAll("circle[type='recovered']").style("display", "none")
             }
             if (targetInnerText.includes('deaths')) {
-                d3.select("#map").select("svg").selectAll("#cases").style("display", "none")
-                d3.select("#map").select("svg").selectAll("#deaths").style("display", "block")
-                d3.select("#map").select("svg").selectAll("#recovered").style("display", "none")
+                d3.select("#map").select("svg").selectAll("circle[type='cases']").style("display", "none")
+                d3.select("#map").select("svg").selectAll("circle[type='deaths']").style("display", "block")
+                d3.select("#map").select("svg").selectAll("circle[type='recovered']").style("display", "none")
             }
             if (targetInnerText.includes('recovered')) {
-                d3.select("#map").select("svg").selectAll("#cases").style("display", "none")
-                d3.select("#map").select("svg").selectAll("#deaths").style("display", "none")
-                d3.select("#map").select("svg").selectAll("#recovered").style("display", "block")
+                d3.select("#map").select("svg").selectAll("circle[type='cases']").style("display", "none")
+                d3.select("#map").select("svg").selectAll("circle[type='deaths']").style("display", "none")
+                d3.select("#map").select("svg").selectAll("circle[type='recovered']").style("display", "block")
             }
 
         })

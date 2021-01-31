@@ -1,40 +1,29 @@
 export function hideMapOverlay(circle) {
-  document.getElementById("map-overlay").style.display = "none";
-  document.getElementById("map-controls").style.display = "block";
-  circle.attr("stroke", "rgb(102, 16, 242)");
-  circle.attr("fill", "rgba(102, 16, 242, 0.5)");
+    document.getElementById("map-overlay").style.visibility = "hidden";
+    document.getElementById("map-overlay").style.opacity = "0";
+    circle.attr("stroke", "rgb(102, 16, 242)");
+    circle.attr("fill", "rgba(102, 16, 242, 0.5)");
 }
 
 export function showMapOverlay() {
-  document.getElementById("map-controls").style.display = "none";
-  document.getElementById("map-overlay").style.display = "block";
+    document.getElementById("map-overlay").style.visibility = "visible";
+    document.getElementById("map-overlay").style.opacity = "1";
 }
 
-export async function loadMapOverlay(titlet, contentt, urlt, circlet) {
-  const title = document.getElementById("map-overlay-title");
-  title.innerHTML = titlet
-  const content = document.getElementById("map-overlay-content");
-  content.innerHTML = contentt
-  const url = document.getElementById("map-overlay-link2");
-  url.innerHTML ="Source: "+ urlt
-  url.href = urlt
+export function loadMapOverlay(title, content, url, circle, date) {
+    const overlayTitle = document.getElementById("map-overlay-title");
+    overlayTitle.innerHTML = title
+    const overlayContent = document.getElementById("map-overlay-content");
+    overlayContent.innerHTML = content
+    const overlayUrl = document.getElementById("map-overlay-link");
+    overlayUrl.href = url
+    overlayUrl.innerHTML = date.toDateString() + ', Source'
 
-  document
-  .getElementById("map-overlay-close")
-  .addEventListener("click", function(){hideMapOverlay(circlet)});
+    document.getElementById("map-overlay-close")
+        .addEventListener("click", function () {
+            hideMapOverlay(circle)
+        });
 
-  showMapOverlay();
+    showMapOverlay();
 }
 
-async function fetchHtmlAsText(url) {
-  const response = await fetch(url);
-  return await response.text();
-}
-
-/* document
-  .getElementById("map-overlay-close")
-  .addEventListener("click", hideMapOverlay);
- */
-/* document
-  .getElementById("map-overlay")
-  .addEventListener("click", hideMapOverlay); */

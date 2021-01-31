@@ -44,6 +44,8 @@ export function drawCommodityCharts(data, sliderWith, margin) {
         const comContainerDiv = document.createElement("div");
 
         comContainerDiv.id = "com" + i + "";
+        comContainerDiv.classList.add("commodity");
+
         commodityChartDiv.appendChild(comContainerDiv);
 
         d3.select("#" + comContainerDiv.id + "")
@@ -88,12 +90,29 @@ export function redrawCoronaChartWithLabel(data, label, margin) {
     let lineColor
     if (label[0] === 'country') {
         lineColor = '#17a2b8'
+        d3.select("#corona-tooltip-cases").style("display", "none")
+        d3.select("#corona-tooltip-deaths").style("display", "none")
+        d3.select("#corona-tooltip-recovered").style("display", "none")
+        d3.select("#corona-tooltip-country").style("display", "initial")
+        d3.select("#corona-tooltip-country").attr("country", label[1])
     } else if (label[0] === 'deaths') {
         lineColor = "rgb(255, 170, 0)"
+        d3.select("#corona-tooltip-cases").style("display", "none")
+        d3.select("#corona-tooltip-deaths").style("display", "initial")
+        d3.select("#corona-tooltip-recovered").style("display", "none")
+        d3.select("#corona-tooltip-country").style("display", "none")
     } else if (label[0] === 'recovered') {
         lineColor = "rgb(0, 214, 143)"
+        d3.select("#corona-tooltip-cases").style("display", "none")
+        d3.select("#corona-tooltip-deaths").style("display", "none")
+        d3.select("#corona-tooltip-recovered").style("display", "initial")
+        d3.select("#corona-tooltip-country").style("display", "none")
     } else {
         lineColor = "#ff3d71"
+        d3.select("#corona-tooltip-cases").style("display", "initial")
+        d3.select("#corona-tooltip-deaths").style("display", "none")
+        d3.select("#corona-tooltip-recovered").style("display", "none")
+        d3.select("#corona-tooltip-country").style("display", "none")
     }
 
     const newCurve = d3.line()
@@ -125,4 +144,7 @@ export function redrawCoronaChartWithLabel(data, label, margin) {
         .select("#yAxis")
         .transition().duration(1000)
         .call(yAxis)
+
+
+
 }

@@ -1,7 +1,12 @@
-//some code taken from http://bl.ocks.org/d3noob/9267535 https://www.d3-graph-gallery.com/graph/bubblemap_leaflet_basic.html
-//hoverover code modified fro https://jsfiddle.net/gerardofurtado/wxh95e9u/
+//some code taken from http://bl.ocks.org/d3noob/9267535 https://www.d3-graph-gallery.com/graph/bubblemap_leaflet_basic.html 
+//to understand how circle are created on a leaflet map. 
+//First link was the idea of the map updating on an event and a general idea of how the circles on leaflet work
+//Second link showed us that we need to create a svg layer and again how to position circles in leaflet
+//hoverover code to match the texts and rects to the circles modified from https://jsfiddle.net/gerardofurtado/wxh95e9u/
 //Number formatting from https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
-//Ideas for the tspan https://stackoverflow.com/questions/16701522/how-to-linebreak-an-svg-text-within-javascript
+//var cases = String(cases).replace(/\B(?=(\d{3})+(?!\d))/g, ","); -> looks for groups of three numbers and if there is a number that precedes this group of three, add a comma before the group of three
+//Ideas for the tspan to have them together in the text tag https://stackoverflow.com/questions/16701522/how-to-linebreak-an-svg-text-within-javascript
+//originally had each tspan have more child tspans but ran into problems withchanging the texts later
 
 import {mapDataHandler} from "./data-handlers.js";
 
@@ -16,15 +21,6 @@ export function drawMap(collection, sliderStartDate) {
             maxZoom: 18,
         }
     ).addTo(map);
-
-    function style(feature) {
-        return {
-            weight: 3,
-            opacity: 1,
-            stroke: "#D9FCFF",
-            fill: "#D9FCFF",
-        };
-    }
 
     L.svg().addTo(map);
 
@@ -42,18 +38,9 @@ export function drawMap(collection, sliderStartDate) {
     };
     L.control.date({position: "bottomleft"}).addTo(map);
 
-    /* Initialize the SVG layer */
-    //map._initPathRoot();
-
-    /* We simply pick up the SVG from the map object */
-    var svg = d3.select(map.getPanes().overlayPane).select("svg");
+    const svg = d3.select(map.getPanes().overlayPane).select("svg");
 
     var g = svg.select("g").attr("class", "leaflet-zoom-hide");
-    //console.log(g);
-
-    var time = 0;
-    //console.log(time);
-
 
     var covidcases = g
         .selectAll("circle")
@@ -61,7 +48,7 @@ export function drawMap(collection, sliderStartDate) {
         .enter()
         .append("circle")
         .attr("pointer-events", "visible")
-        .attr("id", "cases")
+        .attr("type", "cases")
         .attr("country", (d) => d.country)
         .style("cursor", "pointer")
         .style("opacity", 0.6)
@@ -104,7 +91,7 @@ export function drawMap(collection, sliderStartDate) {
         .enter()
         .append("circle")
         .attr("pointer-events", "visible")
-        .attr("id", "deaths")
+        .attr("type", "deaths")
         .attr("country", (d) => d.country)
         .style("cursor", "pointer")
         .style("opacity", 0.6)
@@ -135,12 +122,12 @@ export function drawMap(collection, sliderStartDate) {
         });
 
     var recovered = g
-        .selectAll("circless")
+        .selectAll("circles")
         .data(collection)
         .enter()
         .append("circle")
         .attr("pointer-events", "visible")
-        .attr("id", "recovered")
+        .attr("type", "recovered")
         .attr("country", (d) => d.country)
         .style("cursor", "pointer")
         .style("cursor", "pointer")
@@ -243,14 +230,6 @@ export function drawMap(collection, sliderStartDate) {
             .text(function (d) {
                 return d.country;
             }).style("font-weight", 700)
-        /* .append("tspan")
-        .attr("x", -50)
-        .attr("dy", 25)
-        .text(function (d) {
-          var pop = d.Population;
-          var fullpop = String(pop).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          return "Population: " + fullpop;
-        }).style("font-weight", 600).style("font-size", "14px") */
 
         textbox.append("tspan")
             .attr("id", "casetext")
@@ -316,7 +295,8 @@ export function drawMap(collection, sliderStartDate) {
 
 function initCirclesR() {
     d3.select("#map").select("svg").selectAll("circle").attr("r", function (d) {
-        return scaleCircle(this.id, d.size)
+        const circleType = this.getAttribute('type')
+        return scaleCircle(circleType, d.size)
     })
 }
 
@@ -341,82 +321,15 @@ export function scaleCircle(circleId, data) {
     return radius !== 0 && radius < 4 ? 4 : radius;
 }
 
-
-/* export function updateTexts(date) {
-    var texts = d3
-    .selectAll("#texts")
-
-    texts.select("tspan").remove();
-    texts.append("tspan")
-    .attr("x", -50)
-    .attr("dy", -100)
-    .text(function (d) {
-        return d.country;
-    }).style("font-weight", 700).style("font-size", "18px")
-    .append("tspan")
-            .attr("x", -50)
-            .attr("dy", 25)
-            .style("fill", "#ff3d71")
-            .style("stroke-width", 0)
-            .text(function (d) {
-                var cases = d.data && d.data[date] && d.data[date][1][0]
-                var casenumber = String(cases).replace(
-                    /\B(?=(\d{3})+(?!\d))/g,
-                    ","
-                );
-                return "Cases: " + casenumber;
-            })
-            .append("tspan")
-            .attr("x", -50)
-            .attr("dy", 25)
-            .style("fill", "rgb(255, 170, 0)")
-            .style("stroke-width", 0)
-            .text(function (d) {
-                var cases = d.data && d.data[date] && d.data[date][1][1]
-                return "Deaths: " + 'aa';
-            })
-            .append("tspan")
-            .attr("x", -50)
-            .attr("dy", 25)
-            .style("fill", "rgb(0, 214, 143)")
-            .style("stroke-width", 0)
-            .text(function (d) {
-                var cases = d.data && d.data[date] && d.data[date][1][2]
-                var recovered = String(cases).replace(
-                    /\B(?=(\d{3})+(?!\d))/g,
-                    ","
-                );
-                return "Recovered: " + recovered;
-            });
-} */
-
-export function updateTexts(date) {
-    d3
-        .selectAll("#casetext").text(function (d) {
-        var cases = d.data && d.data[date] && d.data[date][1][0]
-        var casenumber = String(cases).replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ","
-        );
-        return "Cases: " + casenumber;
+export function updateTexts(data) {
+    d3.selectAll("#casetext").text(function (d) {
+        return "Cases: " + data[0].toString();
     })
-    d3
-        .selectAll("#deathtext").text(function (d) {
-        var deaths = d.data && d.data[date] && d.data[date][1][1]
-        var deathnumber = String(deaths).replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ","
-        );
-        return "Deaths: " + deathnumber;
+    d3.selectAll("#deathtext").text(function (d) {
+        return "Deaths: " + data[1].toString();
     })
-    d3
-        .selectAll("#recoveredtext").text(function (d) {
-        var recovered = d.data && d.data[date] && d.data[date][1][2]
-        var recoverednumber = String(recovered).replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ","
-        );
-        return "Recovered: " + recoverednumber;
+    d3.selectAll("#recoveredtext").text(function (d) {
+        return "Recovered: " + data[2].toString();
     })
 }
 

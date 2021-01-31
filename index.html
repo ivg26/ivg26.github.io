@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="css/styles.css"/>
-    <link rel="stylesheet" href="css/scroll-bar.css"/>
     <script src="js/libs/d3.v6.js"></script>
     <script type="module" src="js/modules/main.js"></script>
-    <script type="module" src="js/modules/chart_select.js"></script>
+    <script type="module" src="js/modules/chart-select.js"></script>
     <script type="module" src="js/modules/map-overlay.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -45,11 +44,16 @@
             </div>
         </div>
         <div id="map-overlay">
-            <div id="map-overlay-close">&#x274E;</div>
-            <div id="map-overlay-title"></div>
-            <div id="map-overlay-content"></div>
-            <div id="map-overlay-link">
-                <a id="map-overlay-link2" href=""  target=”_blank”></a>
+            <div id="map-overlay-container">
+                <div id="map-overlay-close">
+                    <span class="material-icons">close</span>
+                </div>
+                <div id="map-overlay-title"></div>
+                <div id="map-overlay-content"></div>
+                <a id="map-overlay-link" href="" target=”_blank”>
+                    Source
+                </a>
+
             </div>
         </div>
         <div id="map"></div>

@@ -46,18 +46,49 @@ export function syncSlider(width, margin, dateScaler) {
                 .attr('d', d3.line())
         });
 
-
         const date = dateScaler.invert(event.x)
+        const sliderData = d3.select(this.parentNode).data()[0]
+        const sliderXOffset = event.x > (width - 110) ? -125 : 5;
+        const tooltipTextAlign = event.x > (width - 110) ? "right" : "left";
+        let yValue;
+        for (let i = 0; i < sliderData.length; i++) {
+            if (sliderData[i].date.toDateString() === date.toDateString()) {
+                yValue = sliderData[i]
+                const country = d3.select("#corona-tooltip-country").node().getAttribute("country")
+                if (country) {
+                    for (const [key, value] of Object.entries(yValue)) {
+                        if (key.split('|')[0] === country) {
+                            yValue.country = parseInt(value.split('|')[0])
+                        }
+                    }
+                }
+                break
+            }
+        }
+        if (yValue) {
+            d3.select("#info_text").text(formatSliderDateText(date));
+            d3.select(".slider-tooltip")
+                .style("left", (event.x + sliderXOffset).toString() + "px")
+                .style("text-align", tooltipTextAlign)
+            d3.selectAll(".slider-tooltip-date").html(date.toDateString())
+            d3.select("#corona-tooltip-cases").html(`Cases: ${d3.format(".2s")(yValue.confirmed)}`)
+            d3.select("#corona-tooltip-deaths").html(`Deaths: ${d3.format(".2s")(yValue.deaths)}`)
+            d3.select("#corona-tooltip-recovered").html(`Recovered: ${d3.format(".2s")(yValue.recovered)}`)
+            d3.select("#corona-tooltip-country").html(`Cases: ${d3.format(".2s")(yValue.country)}`)
+        }
+
 
         // scale circles with slider
         d3.select("#map").select("svg").selectAll("circle").attr("r", function (d) {
             const data = d.data[formatDateKey(date)]
             const size = data ? data[1] : [0, 0, 0]
-            return scaleCircle(this.id, size)
+            const circleType = this.getAttribute('type')
+            return scaleCircle(circleType, size)
         })
 
-        d3.select("#info_text").text(formatSliderDateText(date));
-        updateTexts(formatDateKey(date));
+        if (d.data) {
+            updateTexts(d.data[formatDateKey(date)]);
+        }
     };
 
     return d3.drag()

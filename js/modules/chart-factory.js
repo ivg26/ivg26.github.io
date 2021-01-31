@@ -1,27 +1,6 @@
 import {syncSlider} from "./sync-slider.js";
 import {loadMapOverlay} from './map-overlay.js';
-import {showenergy, showmetals, showfood, showmis} from './chart_select.js'
-
-
-// TODO:
-// DONE - load more lines in corona chart
-// DONE - add legend with hide/show
-// on click show country cases
-//
-// do we need population scaling?
-// wrong display? no turkey?
-// china data?
-// display events differently
-//
-// better circle mouseover
-// style buttons, why input?
-//
-// dropdown
-// mouseover with cases
-//
-// maybe add grid
-// maybe add lockdown data
-
+import {showenergy, showmetals, showfood, showmis} from './chart-select.js'
 
 export function ChartFactory() {
     // default values
@@ -43,7 +22,6 @@ export function ChartFactory() {
                 .scaleTime()
                 .domain(d3.extent(data, (d) => d.date))
                 .range([margin.left, width - margin.right]);
-
             let yMax
             if (labels) {
                 const yMaxes = []
@@ -126,12 +104,38 @@ export function ChartFactory() {
                     .attr("class", "curve")
                     .style("stroke", "rgb(0, 214, 143)");
 
-        
 
             }
 
-            const slider = d3.line();
-            const sliderPosition = typeof sliderStart.getMonth === 'function' ? xScale(sliderStart) : sliderStart
+            const slider = d3.line()
+            let sliderPosition = typeof sliderStart.getMonth === 'function' ? xScale(sliderStart) : sliderStart
+            let sliderMouseoverDiv;
+            let tooltipY = 40
+            if(labels) {
+                const yValue = data.filter(d => {
+                    return d.date.toDateString() === xScale.invert(sliderPosition).toDateString()
+                })[0]
+                sliderMouseoverDiv = d3.select(this).append("div")
+                    .attr("class", "slider-tooltip")
+                    .attr("type", labels[0][0])
+                    .style("opacity", 0)
+                    .style("display", "none")
+                    .html(`
+                    <div class="slider-tooltip-date">
+                    ${xScale.invert(sliderPosition).toDateString()}
+                    </div>
+                    <div id="corona-tooltip-cases">Cases: ${yValue.confirmed}</div>
+                    <div style="display: none" id="corona-tooltip-deaths">Deaths: ${d3.format(".2s")(yValue.deaths)}</div>
+                    <div style="display: none" id="corona-tooltip-recovered">Recovered: ${d3.format(".2s")(yValue.recovered)}</div>
+                    <div style="display: none" id="corona-tooltip-country">Cases: ${d3.format(".2s")(yValue.deaths)}</div>
+                    `)
+                    .style("left", (sliderPosition + 5).toString() + "px")
+                    .style("top", (tooltipY).toString() + "px");
+            }
+            else {
+                sliderMouseoverDiv = d3.select(this).append("div")
+            }
+
             svg
                 .append("path")
                 .datum([
@@ -141,6 +145,17 @@ export function ChartFactory() {
                 .attr("d", slider)
                 .attr("class", "slider")
                 .attr("stroke-width", sliderWidth)
+                .on("mouseover", function (d) {
+                    sliderMouseoverDiv.transition()
+                        .duration(200)
+                        .style("display", "initial")
+                        .style("opacity", .9)
+                })
+                .on("mouseout", function (d) {
+                    sliderMouseoverDiv.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                })
                 .style("cursor", "pointer")
                 .call(drag(width, margin, xScale));
 
@@ -153,13 +168,12 @@ export function ChartFactory() {
                         .style("opacity", 0)
                         .style("display", "none");
                     svg.append("circle")
-                        .attr("r", 8)
+                        .attr("r", 4)
                         .attr("class", "chart-event")
                         .attr("cy", yScale.range()[0])
                         .attr("cx", xScale(events[i].date))
                         .attr("stroke", "rgb(102, 16, 242)")
                         .attr("fill", "rgba(102, 16, 242, 0.5)")
-                        .attr('id', "eventcircle" + i)
                         .on("mouseover", function (d) {
                             let cx, cy
                             if (id === "#commodity-charts") {
@@ -178,22 +192,42 @@ export function ChartFactory() {
                                 .style("top", cy);
                         })
                         .on('click', function (d) {
-                            /* window.open(
-                                events[i].url,
-                                '_blank' // <- This is what makes it open in a new window.
-                            ); */
-                            d3.select(this).attr("stroke", "rgb(50, 98, 168)");
-                            d3.select(this).attr("fill", "rgba(50, 98, 168, 0.5)");
-                            loadMapOverlay(events[i].title, events[i].content, events[i].url, d3.select(this))
-                            if (events[i].type == "energy"){
+                            d3.selectAll('.chart-event')
+                                .attr("fill", "rgba(102, 16, 242, 0.5)")
+                                .attr("stroke", "rgba(102, 16, 242)")
+
+                            if (events[i].type === "energy") {
                                 showenergy();
-                            }else if(events[i].type == "metal"){
+                            } else if (events[i].type === "metals") {
                                 showmetals();
-                            }else if(events[i].type == "food"){
+                            } else if (events[i].type === "food") {
                                 showfood();
-                            }else if(events[i].type == "mis"){
+                            } else if (events[i].type === "misc") {
                                 showmis();
                             }
+
+                            d3.select(this)
+                                .attr("fill", "rgba(232, 62, 140, 0.5)")
+                                .attr("stroke", "rgba(232, 62, 140)");
+
+                            const commodityCharts = document.querySelectorAll(".commodity")
+                            for (let j = 0; j < commodityCharts.length; j++) {
+                                commodityCharts[j].classList.remove("active-commodity-chart");
+                            }
+
+                            if (events[i].commoditynumber) {
+                                const selectedCommodityChart = document.getElementById(events[i].commoditynumber)
+                                selectedCommodityChart.classList.add("active-commodity-chart");
+                                setTimeout(function () {
+                                    selectedCommodityChart.classList.remove("active-commodity-chart");
+                                }, 500);
+                                const scrollPosition = selectedCommodityChart.offsetTop
+                                document.getElementById("commodity-charts").scrollTop = scrollPosition - 100
+                            }
+
+                            loadMapOverlay(events[i].title, events[i].content, events[i].url, d3.select(this), events[i].date)
+
+
                         })
                         .on("mouseout", function (d) {
                             div.transition()

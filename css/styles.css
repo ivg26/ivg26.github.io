@@ -1,8 +1,9 @@
 html {
-  margin: 0 0 0 0;
+  margin: 0 -5px 0 0;
   font-family: 'Open Sans', sans-serif;
   font-weight: 600;
   overflow: hidden;
+  scrollbar-color: rgb(51, 102, 255) white;
 }
 
 body {
@@ -39,35 +40,67 @@ body {
 }
 
 #map-overlay-title{
-  font-size: 40px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  font-size: 18px;
+  margin-bottom: 10px;
+  width: calc(100% - 20px);
 }
 #map-overlay-content {
-  font-size: 25px;
-  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 400;
   overflow: auto;
+  text-align: justify;
+  margin-bottom: 5px;
 }
+
 #map-overlay-link{
+  position: absolute;
+  bottom: 7px;
+  right: 9px;
+  color: black;
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 400;
 }
+
+#map-overlay-link:hover{
+  color: rgb(51, 102, 255);
+  text-decoration: underline;
+}
+
 
 #map-overlay {
   position: absolute;
-  height: 100%;
-  width: 100%;
-  z-index: 3000;
-  display: none;
+  z-index: 9001;
+  visibility: hidden;
+  opacity: 0;
   background-color: rgba(255, 255, 255, 0.9);
+  grid-column: 1 / 2;
+  gap: 0;
+  width: calc(100% - 150px);
+  max-width: 500px;
+  left: 10px;
+  top: 10px;
+  transition: all .5s linear;
 }
 
+#map-overlay-container{
+  padding: 20px 20px 20px 20px;
+  position: relative;
+}
 
 #map-overlay-close{
   position: absolute;
-  right: 20px;
-  top: 10px;
+  right: 10px;
+  top: -10px;
   cursor: pointer;
   font-size: 40px;
 }
+
+#map-overlay-close:hover{
+  color: rgb(51, 102, 255);
+}
+
+
 
 
 #corona-chart {
@@ -90,7 +123,7 @@ body {
   right: 10px;
   top: 10px;
   font-size: 10pt;
-  z-index: 9999;
+  z-index: 9000;
   padding: 10px;
   border-radius: 2px;
   width: 100px;
@@ -118,7 +151,26 @@ body {
   grid-column: 2 / 3;
   grid-row: 1 / 3;
   overflow-y: auto;
-  margin-top: 60px
+  margin-top: 70px;
+  scroll-behavior: smooth;
+}
+
+
+.active-commodity-chart{
+  background-color: rgba(0, 214, 143, 0.2);
+}
+
+.commodity{
+  transition: background-color 1500ms linear;
+}
+
+.commodity:not(:last-child) {
+  border-bottom-style: solid;
+  border-bottom-color: #fafafa;
+  border-bottom-width: 10px;
+  border-right-style: solid;
+  border-right-color: #fafafa;
+  border-right-width: 10px;
 }
 
 
@@ -138,7 +190,7 @@ text{
   font-weight: 400;
 }
 
-.axis path{"#ff3d71"
+.axis path{
   stroke: #8f9bb3;
   fill: none;
 }
@@ -183,35 +235,55 @@ text{
   background-color: rgba(255, 255, 255, 0.9);
   position: absolute;
   pointer-events: none;
+  z-index: 9990;
+  padding: 10px;
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.slider-tooltip{
+  background-color: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  pointer-events: none;
   z-index: 9999;
   padding: 10px;
   border-radius: 2px;
-  font-weight: 400;
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  width: 100px;
 }
 
 #commodity-control {
   background-color: #FFFFFF;
   display: flex;
   position: absolute;
-  top: -1px;
-  right: -11px;
-  padding: 15px 20px 15px 20px;
-  grid-column: 2 / 3;
-  width: calc(100% - 30px);
-  gap: 10px;
-}
+  top: 0px;
+  right: 0px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  padding-right: 20px;
 
+  grid-column: 2 / 3;
+  width: calc(100% - 40px);
+  gap: 10px;
+  border-bottom: 10px solid #fafafa;
+}
 
 .commodity-control-button {
   background-color: white;
-  color: black;
-  border: 1px solid black;
+  box-shadow: 0 0 0 1px black inset;
   border-radius: 2px;
-  padding: 5px 10px 5px 10px;
   cursor: pointer;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 12px;
   flex-grow: 1;
   text-align: center;
+  vertical-align: bottom;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 30px;
+  height: 30px;
+
 }
