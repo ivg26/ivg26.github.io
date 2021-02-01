@@ -50,7 +50,7 @@ export const globalCoronaEvents = [
         date: new Date("2020-04-25"),
         url: "https://eyeonhousing.org/2020/09/largest-four-month-lumber-price-increase-in-70-years-outweighs-other-price-declines-in-august/",
         commodity: 'Lumber',
-        type: "metals",
+        type: "misc",
         commoditynumber: 'com35'
     },
     {
@@ -153,7 +153,7 @@ export const commodityEvents = [
         date: new Date("2020-04-01"),
         url: "https://eyeonhousing.org/2020/09/largest-four-month-lumber-price-increase-in-70-years-outweighs-other-price-declines-in-august/",
         commodity: 'Lumber',
-        type: "metals",
+        type: "misc",
         commoditynumber: 'com35'
     },
     {

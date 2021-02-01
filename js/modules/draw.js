@@ -27,7 +27,7 @@ export function drawCommodityCharts(data, sliderWith, margin) {
         var subset_energy = [2, 7, 20, 21, 25, 26, 27, 31, 38];
         var subset_metals = [0, 6, 9, 12, 13, 16, 18, 19, 22, 23, 30, 34, 36, 41, 43, 51, 53, 55, 56, 56, 57];
         var subset_food = [1, 4, 5, 8, 10, 11, 17, 28, 29, 32, 39, 42, 44, 45, 46, 47, 48, 50, 52];
-        var subset_misc = [3, 14, 15, 24, 33, 37, 40, 49, 54];
+        var subset_misc = [3, 14, 15, 24, 33, 35, 37, 40, 49, 54];
 
         var catVar;
         if (subset_energy.includes(i)) {
