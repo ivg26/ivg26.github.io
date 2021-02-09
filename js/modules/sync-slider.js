@@ -65,8 +65,8 @@ export function syncSlider(width, margin, dateScaler) {
                 break
             }
         }
+        d3.select("#info_text").text(formatSliderDateText(date));
         if (yValue) {
-            d3.select("#info_text").text(formatSliderDateText(date));
             d3.select(".slider-tooltip")
                 .style("left", (event.x + sliderXOffset).toString() + "px")
                 .style("text-align", tooltipTextAlign)
